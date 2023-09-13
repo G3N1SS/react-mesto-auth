@@ -1,0 +1,24 @@
+.page {
+    margin: 0 auto 0 auto;
+    padding: 0 auto 0 auto;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    font-family: 'Inter';
+    z-index: -1;
+    padding: 0 0 1px 0;
+}
+
+@media screen and (max-width:900px) {
+    .page {
+        max-width: 900px;
+    }
+}
+
+@media screen and (max-width:655px) {
+    .page {
+        max-width: 655px;
+        margin: 0 auto 0 auto;
+    }
+}
