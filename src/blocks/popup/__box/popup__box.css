@@ -4,6 +4,7 @@
     max-height: 330px;
     background-color: white;
     border-radius: 10px;
+    z-index: 99;
 }
 
 @media screen and (max-width:655px) {

@@ -1,8 +1,33 @@
-# React + Vite
+# Проектная работа: "Mesto (ReactJS App)".
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##Создана в рамках учебы в Яндлекс.Практикуме на курсе "Веб-разработчик"
 
-Currently, two official plugins are available:
+###Описание:
+Mesto - это социальная сеть, где пользователи могут делаиться фотографиям с их путешествий по обширной России. Создан проект в рамках прохождения 4-11 спринтов курса. Данная работа переделывалась неоднократно, в этот раз код был пересен на библиотеку React.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+###Функционал:
+1.Создание карточек с Mesto'ом
+2.Редактирование прфиля пользователя(имя, о себе, аватар)
+3.Лайк карточек
+4.Удаление карточек только пользовтелем, который ее создал
+5.Хранение данных на удаленном сервере
+6.Валидация форм на стороне клиента
+
+###Технологии:
+1.Positioning Elements
+2.Animation and Transform using CSS
+3.BEM Methodology
+4.File Structure and File Paths (Nested BEM)
+5.Git
+6.JavaScript (Asynchronous JS, OOP, Fetch API)
+7.Webpack
+8.React JS
+9.Functional Components
+10.Flexbox
+11.Grid Layout
+
+###Будущая работа будет в себе включать:
+1.Регистрация нового пользователя
+2.Личный кабинет пользователя
+3.Создание сервера на Node.js
+

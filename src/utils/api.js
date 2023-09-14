@@ -5,7 +5,7 @@ class Api {
         this._authorization = config.headers.authorization;
     }
 
-    _checkResponce(res) {return res.ok ? res.json() : Promise.reject}
+    _checkResponse(res) {return res.ok ? res.json() : Promise.reject(res.status)}
 
     getInfo() {
         return fetch(`${this._url}/users/me`, {
@@ -13,7 +13,7 @@ class Api {
                 authorization: this._authorization
             }
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 
     getCards() {
@@ -22,7 +22,7 @@ class Api {
                 authorization: this._authorization
             }
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 
     setUserInfo(data) {
@@ -34,7 +34,7 @@ class Api {
                 about: data.job
             })
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 
     setNewAvatar(data) {
@@ -45,7 +45,7 @@ class Api {
                 avatar: data.inputAvatar
             })
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 
     addCard(data) {
@@ -57,7 +57,7 @@ class Api {
                 link: data.inputImage
             })
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 
     putLike(cardId){
@@ -67,7 +67,7 @@ class Api {
                 authorization: this._authorization
             }
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 
     removeLike(cardId){
@@ -77,7 +77,7 @@ class Api {
                 authorization: this._authorization
             }
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 
     deleteCard(cardId){
@@ -87,7 +87,7 @@ class Api {
                 authorization:this._authorization
             }
         })
-        .then(this._checkResponce)
+        .then(this._checkResponse)
     }
 }
 

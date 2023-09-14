@@ -12,7 +12,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [isImagePopup, setImagePopup] = useState(false);
+  const [isImagePopupOpen, setImagePopup] = useState(false);
 
   function closeAllPopups(){
     setIsEditAvatarPopupOpen(false)
@@ -33,14 +33,9 @@ function App() {
     setIsAddPlacePopupOpen(true)
   }
 
-  // function handleDeleteClick(){
-    
-  // }
-
   function handleCardClick(card){
     setSelectedCard(card);
     setImagePopup(true)
-    // setEventListenerForDocument()
   }
 
   return (
@@ -61,9 +56,24 @@ function App() {
       isOpen = {isEditProfilePopupOpen}
       onClose ={closeAllPopups}
     >
-      <input className="popup__input popup__input_type_name" type="text" name="name" required minLength={2} maxLength={40} placeholder='Введите Имя'/>
+      <input 
+        className="popup__input popup__input_type_name" 
+        type="text" name="name" 
+        required 
+        minLength={2} 
+        maxLength={40} 
+        placeholder='Введите Имя'
+      />
       <span id="name-error" className="error"/>
-      <input className="popup__input popup__input_type_job" type="text" name="job" required minLength={2} maxLength={200} placeholder='О себе'/>
+      <input 
+        className="popup__input popup__input_type_job" 
+        type="text" 
+        name="job" 
+        required 
+        minLength={2} 
+        maxLength={200} 
+        placeholder='О себе'
+      />
       <span id="job-error" className="error"/>
     </PopupWithForm>
 
@@ -74,11 +84,22 @@ function App() {
       isOpen={isAddPlacePopupOpen}
       onClose ={closeAllPopups}
     >
-      <input className="popup__input popup__input_type_place" type="text" name="inputPlace" placeholder="Название"
-        required minLength={2}/>
+      <input 
+        className="popup__input popup__input_type_place" 
+        type="text" name="inputPlace" 
+        placeholder="Название"
+        required 
+        minLength={2}
+      />
       <span id="inputPlace-error" className="error"/>
-      <input className="popup__input popup__input_type_image" name="inputImage"
-        placeholder="Ссылка на картинку" required minLength={2} type="url"/>
+      <input 
+        className="popup__input popup__input_type_image" 
+        name="inputImage"
+        placeholder="Ссылка на картинку" 
+        required 
+        minLength={2} 
+        type="url"
+      />
       <span id="inputImage-error" className="error"/>
     </PopupWithForm>
 
@@ -88,8 +109,14 @@ function App() {
       isOpen={isEditAvatarPopupOpen}
       onClose ={closeAllPopups}
     >
-      <input className="popup__input popup__input_type_avatar" type="url" name="inputAvatar" placeholder="Ссылка на аватар"
-        required minLength="2"/>
+      <input 
+        className="popup__input popup__input_type_avatar" 
+        type="url" 
+        name="inputAvatar" 
+        placeholder="Ссылка на аватар"
+        required 
+        minLength="2"
+      />
       <span id="inputAvatar-error" className="error"/>
     </PopupWithForm>
 
@@ -99,22 +126,9 @@ function App() {
       titleBtn='Да'
     />
 
-    <PopupImage  card={selectedCard} isOpen={isImagePopup} onClose = {closeAllPopups}/>
+    <PopupImage  card={selectedCard} isOpen={isImagePopupOpen} onClose = {closeAllPopups}/>
 
   </div>
-  <template className="element-template" id="elementTemplate">
-      <div className="elements__card">
-        <img className="elements__image" alt="" src="."/>
-        <button className="elements__delete-button"></button>
-        <div className="elements__banner">
-          <h2 className="elements__name"></h2>
-          <div className="elements__like">
-            <button className="elements__like-button" type="button"></button>
-            <p className="elements__like-count"></p>
-          </div>
-        </div>
-      </div>
-  </template>
   </>
   )
 }

@@ -15,9 +15,9 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
         setUserName(dataUser.name);
         setUserDescription(dataUser.about);
         setUserAvatar(dataUser.avatar);
-        dataCards.forEach(dataEl => dataEl.myid = dataUser._id)
         setCards(dataCards)
       })
+      .catch((err) => console.error(`Ошибка при создании начальных элементов страницы ${err}`))
   }, []);
 
   return(
@@ -39,9 +39,7 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
           <div className="element">
             {cards.map(data => {
                 return (
-                <div className="elements__card" key={data._id}>
-                  <Card card={data} onCardClick={onCardClick}/>
-                </div>
+                  <Card card={data} onCardClick={onCardClick} key={data._id}/>
                 )
             })}
           </div>
