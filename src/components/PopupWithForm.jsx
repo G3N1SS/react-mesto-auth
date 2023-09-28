@@ -1,12 +1,20 @@
-export default function PopupWithForm({name, title, titleBtn, children, isOpen, onClose}){
+
+
+export default function PopupWithForm({name, title, titleBtn, children, isOpen, onClose, onSubmit, isButtonLoading, isValid=true}){
     return(
-    <div className={`popup popup_type_opened-${name} ${isOpen && 'popup_opened'}`}>
-        <div className="popup__box">
+    <div className={`popup popup_type_opened-${name} ${isOpen ? 'popup_opened' : ''}`} onClick={onClose}>
+        <div className="popup__box" onClick={(evt => evt.stopPropagation())}>
         <button className="popup__close popup__close_profile" type="button" onClick={onClose}></button>
         <h2 className="popup__title">{title}</h2>
-        <form className="popup__form popup__form_profile" name={name}>
+        <form className="popup__form popup__form_profile" name={name} onSubmit={onSubmit}>
             {children}
-            <button className="popup__save" type="submit">{titleBtn || 'Сохранить'}</button>
+            <button 
+                className={`popup__save ${isButtonLoading ? 'popup__save_loading' : ''} ${isValid ? '' : 'popup__save_invalid'}`} 
+                type="submit"
+                disabled={isButtonLoading}
+            >
+                    {isButtonLoading ? 'Отправляем ваш запрос' : titleBtn || 'Сохранить'}
+            </button>
         </form>
         </div>
     </div>
