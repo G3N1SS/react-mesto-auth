@@ -28,13 +28,13 @@ function App() {
 
   const [deleteCardId, setDeleteCardId] = useState('')
 
-  const setAllStatesForClosePopups = useCallback(() => {
+  const setAllStatesForClosePopups = () => {
     setIsEditAvatarPopupOpen(false)
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setImagePopup(false)
     setDeletePopupOpen(false)
-  }, [])
+  }
 
   const closePopupByEsc = useCallback((evt) => {
     if (evt.key === 'Escape') {
@@ -96,7 +96,10 @@ function App() {
         console.log(dataCards)
         setIsLoadingCards(false)
       })
-      .catch((err) => console.error(`Ошибка при создании начальных элементов страницы ${err}`))
+      .catch((err) => {
+        setIsLoadingCards(false)
+        console.error(`Ошибка при создании начальных элементов страницы ${err}`)
+      })
   }, []);
 
   function handleDeleteCard(evt){
@@ -110,7 +113,10 @@ function App() {
         closeAllPopups()
         setIsButtonLoading(false)
       })
-      .catch((err) => console.error(`Ошибка при удалении карточки ${err}`))
+      .catch((err) => {
+        setIsButtonLoading(false)
+        console.error(`Ошибка при удалении карточки ${err}`)
+      })
   }
 
   function handleUpdateUser(dataUser, resetInputValues){
@@ -122,7 +128,10 @@ function App() {
         resetInputValues()
         setIsButtonLoading(false);
       })
-      .catch((err => console.error(`Ошибка при редактирования профиля ${err}`)))
+      .catch((err) => {
+        setIsButtonLoading(false)
+        console.error(`Ошибка при редактирования профиля ${err}`)
+      })
   }
 
   function handleUpdateAvatar(dataUser, resetInputValues){
@@ -134,7 +143,10 @@ function App() {
         resetInputValues()
         setIsButtonLoading(false);
       })
-      .catch((err => console.error(`Ошибка при редактирования аватара ${err}`)))
+      .catch((err) => {
+        setIsButtonLoading(false);
+        console.error(`Ошибка при редактирования аватара ${err}`)
+    })
   }
 
   function handleAddCard(dataCard, resetInputValues){
@@ -146,7 +158,10 @@ function App() {
         resetInputValues()
         setIsButtonLoading(false);
       })
-      .catch((err => console.error(`Ошибка при добавлении карточки ${err}`)))
+      .catch((err) => {
+        setIsButtonLoading(false)
+        console.error(`Ошибка при добавлении карточки ${err}`)
+      })
   }
 
   return (
