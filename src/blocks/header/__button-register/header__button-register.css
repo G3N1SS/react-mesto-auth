@@ -1,0 +1,20 @@
+.header__button-register{
+  display: inline;
+  border: none;
+  color: white;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  background-color: transparent;
+  cursor: pointer;
+  max-height: 33px;
+  padding: 0;
+  text-decoration: none;
+}
+
+.header__button-register:hover{
+  transition: ease 1s;
+  transform: scale(1.02);
+  opacity: 0.8;
+  border-bottom: 1px solid white;
+}

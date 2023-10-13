@@ -2,8 +2,10 @@ import { useContext } from "react"
 import Card from "./Card.jsx"
 import CurrentUserContext from "../contexts/CurrentUserContext.jsx"
 import Spinner from "./Spinner/Spinner.jsx"
+import Register from "./Register.jsx"
+import Login from "./Login.jsx"
 
-export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick, onDelete, cards, isLoadingCards}){
+export default function Main({name, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onDelete, cards, isLoadingCards, isLoadingProfile}){
   const currentUser = useContext(CurrentUserContext)
 
   // const [userName, setUserName] = useState('')
@@ -13,17 +15,17 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
 
   return(
     <main>
-      <section className="profile">
-        <div className="profile__info">
+      {name === 'main' ? <><section className="profile">
+        {isLoadingProfile ? ' ' : <div className="profile__info">
           <img className="profile__avatar-image" alt="Аватар" src={currentUser.avatar ? currentUser.avatar : '#'}/>
           <button className="profile__avatar-button" onClick={onEditAvatar}></button>
           <div className="profile__banner">
-            <h1 className="profile__name">{currentUser.name ? currentUser.name : '#'}</h1>
-            <p className="profile__job">{currentUser.about ? currentUser.about : '#'}</p>
+            <h1 className="profile__name">{currentUser.name ? currentUser.name : ' '}</h1>
+            <p className="profile__job">{currentUser.about ? currentUser.about : ' '}</p>
             <button className="profile__edit-button" type="button" onClick={onEditProfile}></button>
           </div>
           <button className="profile__add-button" type="button" onClick={onAddPlace}></button>
-        </div>
+        </div>}
       </section>
       <section className="elements">
         {isLoadingCards ? <Spinner/> :
@@ -35,7 +37,10 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
             })}
           </div>
         }       
-      </section>
+      </section></> : name === 'signup' ? 
+        <Register name={name}/>
+      :
+      <Login name={name}/>}
     </main>
     )
 }

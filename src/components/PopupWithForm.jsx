@@ -13,7 +13,7 @@ export default function PopupWithForm({name, title, titleBtn, children, isOpen, 
                 type="submit"
                 disabled={isButtonLoading}
             >
-                    {isButtonLoading ? 'Отправляем ваш запрос' : titleBtn || 'Сохранить'}
+                    {isButtonLoading ? '' : titleBtn || 'Сохранить'}
             </button>
         </form>
         </div>
