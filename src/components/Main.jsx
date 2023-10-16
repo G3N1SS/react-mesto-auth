@@ -15,7 +15,8 @@ export default function Main({name, onEditProfile, onAddPlace, onEditAvatar, onC
 
   return(
     <main>
-      {name === 'main' ? <><section className="profile">
+      {name === 'main' ? <>
+      <section className="profile">
         {isLoadingProfile ? ' ' : <div className="profile__info">
           <img className="profile__avatar-image" alt="Аватар" src={currentUser.avatar ? currentUser.avatar : '#'}/>
           <button className="profile__avatar-button" onClick={onEditAvatar}></button>
@@ -37,7 +38,9 @@ export default function Main({name, onEditProfile, onAddPlace, onEditAvatar, onC
             })}
           </div>
         }       
-      </section></> : name === 'signup' ? 
+      </section>
+      </> 
+      : name === 'signup' ? 
         <Register name={name}/>
       :
       <Login name={name}/>}

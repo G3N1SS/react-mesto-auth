@@ -1,5 +1,3 @@
-
-
 export default function PopupWithForm({name, title, titleBtn, children, isOpen, onClose, onSubmit, isButtonLoading, isValid=true}){
     return(
     <div className={`popup popup_type_opened-${name} ${isOpen ? 'popup_opened' : ''}`} onClick={onClose}>

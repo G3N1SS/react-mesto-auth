@@ -9,3 +9,9 @@
   border-bottom: 1px solid #CCCCCC;
   color: white;
 }
+
+@media screen and (max-width:400px){
+  .login__input{
+    width: 260px;
+  }
+}

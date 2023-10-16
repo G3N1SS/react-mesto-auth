@@ -1,5 +1,6 @@
 export default function Popup({name, isOpen, onClose, children}){
-  <div className={`popup popup_type_opened-${name}  ${isOpen ? 'popup_opened' : ''}`} onMouseDown={onClose}>
+  return(
+  <div className={`popup popup_type_opened-${name}  ${isOpen ? 'popup_opened' : ''}`} onClick={onClose}>
     <div 
       className={`${name === 'image' ? 'popup__image-box' : 'popup__box'} ${name === 'result' ? 'popup__registration-container' : ''}`}
       onMouseDown={(evt) => evt.stopPropagation()}
@@ -8,4 +9,5 @@ export default function Popup({name, isOpen, onClose, children}){
     {children}
     </div>
   </div>
-}
+  )
+} 

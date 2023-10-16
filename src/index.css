@@ -5,9 +5,13 @@
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
 @import url(./blocks/header/__container/header__container.css);
+@import url(./blocks/header/__container/_type/header__container_type_desktop.css);
+@import url(./blocks/header/__container/_type/header__container_type_mobile.css);
 @import url(./blocks/header/__email/header__email.css);
 @import url(./blocks/header/__exit/header__exit.css);
 @import url(./blocks/header/__button-register/header__button-register.css);
+@import url(./blocks/header/__burger-menu-button/header__burger-menu-button.css);
+@import url(./blocks/header/__burger-menu-button/_type/header__burger-menu-button_type_active.css);
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__info/profile__info.css);
 @import url(./blocks/profile/__avatar-image/profile__avatar-image.css);
@@ -31,6 +35,9 @@
 @import url(./blocks/popup/__image-box/popup__image-box.css);
 @import url(./blocks/popup/__image/popup__image.css);
 @import url(./blocks/popup/__registration-image/popup__registration-image.css);
+@import url(./blocks/popup/__registration-container/popup__registration-container.css);
+@import url(./blocks/popup/__registration-title/popup__registration-title.css);
+@import url(./blocks/popup/__registration-image/_type/popup__registration-image_type_error.css);
 @import url(./blocks/popup/__caption/popup__caption.css);
 @import url(./blocks/popup/_type/popup_type_opened-image.css);
 @import url(./blocks/popup/_type/popup_type_opened-add.css);

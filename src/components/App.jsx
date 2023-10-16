@@ -10,9 +10,7 @@ import api from '../utils/api.js'
 import EditProfilePopup from './EditProfilePopup.jsx'
 import EditAvatarPopup from './EditAvatarPopup.jsx'
 import AddPlacePopup from './AddPlacePopup.jsx'
-import StartPage from './StartPage.jsx'
 import { Route, Routes, Link, useNavigate, Navigate } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom'
 import Register from './Register.jsx'
 import Login from './Login.jsx'
 import PageNotFound from './PageNotFound.jsx'
@@ -20,6 +18,7 @@ import SendContext from '../contexts/SendContext.jsx'
 import InfoTooltip from './InfoToolTip.jsx'
 import { authorization, getUserData, registration } from '../utils/auth.js'
 import ProtectedRoute from './ProtectedRoute.jsx'
+
 
 function App() {
   const navigate = useNavigate()
@@ -45,11 +44,11 @@ function App() {
   const [isSuccessful, setIsSuccessful] = useState(false)
   const [isCheckToken, setIsCheckToken] = useState(true)
 
-  const [register,setRegister] = useState(true)
+  // const [register,setRegister] = useState(true)
 
-  const registerLoginChange = useCallback(() => {
-    register ? setRegister(false) : setRegister(true)
-  }, [register])
+  // const registerLoginChange = useCallback(() => {
+  //   register ? setRegister(false) : setRegister(true)
+  // }, [register])
 
   function handleLogin(password,email){
     setIsButtonLoading(true)
@@ -57,7 +56,7 @@ function App() {
       .then(res => {
         localStorage.setItem('jwt', res.token)
         setLoggedIn(true)
-        window.scrollTo(0, 0)
+        
         navigate('/')
       })
       .catch(err => {
@@ -74,7 +73,7 @@ function App() {
       .then(() => {
         setIsResultPopupOpen(true)
         setIsSuccessful(true)
-        window.scrollTo(0, 0)
+
         navigate('/sign-in')
       })
       .catch(err => {
@@ -144,68 +143,104 @@ function App() {
     setDeletePopupOpen(true)
     setEventListenerForDocument()
   }
+  
+  const handleSubmit = useCallback((request, textError) => {
+    setIsButtonLoading(true)
+    request()
+      .then(closeAllPopups)
+      .catch(e => console.error(`${textError} ${e}`))
+      .finally(() => setIsButtonLoading(false))
+  }, [closeAllPopups])
 
-  function handleDeleteCard(evt){
+  // function handleDeleteCard(evt){
+  //   evt.preventDefault()
+  //   setIsButtonLoading(true)
+  //   api.deleteCard(deleteCardId)
+  //     .then(() => {
+  //       setCards(cards.filter((item) => {
+  //         return item._id !== deleteCardId
+  //       }))
+  //       closeAllPopups()
+  //       setIsButtonLoading(false)
+  //     })
+  //     .catch((err) => {
+  //       setIsButtonLoading(false)
+  //       console.error(`Ошибка при удалении карточки ${err}`)
+  //     })
+  // }
+  const handleDeleteSubmit = useCallback((evt) => {
     evt.preventDefault()
-    setIsButtonLoading(true)
-    api.deleteCard(deleteCardId)
-      .then(() => {
-        setCards(cards.filter((item) => {
-          return item._id !== deleteCardId
+    function makeRequest() {
+      return (api.deleteCard(deleteCardId)
+        .then(() => {
+          setCards(cards.filter(card => { return card._id !== deleteCardId }))
+        })
+      )
+    }
+    handleSubmit(makeRequest, 'Ошибка при удалении карточки')
+  }, [cards, deleteCardId, handleSubmit])
+
+  const handleUpdateUser = useCallback(userEmail => {
+    function makeRequest(){
+      return (api.setUserInfo(userEmail))
+      .then(res => {
+        setCurrentUser(res)
+      })
+    }
+    handleSubmit(makeRequest, 'Ошибка при редактировании профиля')
+  }, [handleSubmit])
+  
+
+  // function handleUpdateAvatar(dataUser, resetInputValues){
+  //   setIsButtonLoading(true);
+  //   api.setNewAvatar(dataUser)
+  //     .then(res => {
+  //       setCurrentUser(res)
+  //       closeAllPopups()
+  //       resetInputValues()
+  //       setIsButtonLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setIsButtonLoading(false);
+  //       console.error(`Ошибка при редактирования аватара ${err}`)
+  //   })
+  // }
+  const handleUpdateAvatar = useCallback((userEmail, resetInputValues) => {
+    function makeRequest() {
+      return (api.setNewAvatar(userEmail)
+        .then(res => {
+          setCurrentUser(res)
+          resetInputValues()
         }))
-        closeAllPopups()
-        setIsButtonLoading(false)
-      })
-      .catch((err) => {
-        setIsButtonLoading(false)
-        console.error(`Ошибка при удалении карточки ${err}`)
-      })
-  }
+    }
+    handleSubmit(makeRequest, 'Ошибка при редактировании аватара')
+  }, [handleSubmit])
 
-  function handleUpdateUser(dataUser, resetInputValues){
-    setIsButtonLoading(true);
-    api.setUserInfo(dataUser)
-      .then(res => {
-        setCurrentUser(res)
-        closeAllPopups()
-        resetInputValues()
-        setIsButtonLoading(false);
-      })
-      .catch((err) => {
-        setIsButtonLoading(false)
-        console.error(`Ошибка при редактирования профиля ${err}`)
-      })
-  }
-
-  function handleUpdateAvatar(dataUser, resetInputValues){
-    setIsButtonLoading(true);
-    api.setNewAvatar(dataUser)
-      .then(res => {
-        setCurrentUser(res)
-        closeAllPopups()
-        resetInputValues()
-        setIsButtonLoading(false);
-      })
-      .catch((err) => {
-        setIsButtonLoading(false);
-        console.error(`Ошибка при редактирования аватара ${err}`)
-    })
-  }
-
-  function handleAddCard(dataCard, resetInputValues){
-    setIsButtonLoading(true)
-    api.addCard(dataCard)
-      .then(res => {
-        setCards([res, ...cards])
-        closeAllPopups()
-        resetInputValues()
-        setIsButtonLoading(false);
-      })
-      .catch((err) => {
-        setIsButtonLoading(false)
-        console.error(`Ошибка при добавлении карточки ${err}`)
-      })
-  }
+  // function handleAddCard(dataCard, resetInputValues){
+  //   setIsButtonLoading(true)
+  //   api.addCard(dataCard)
+  //     .then(res => {
+  //       setCards([res, ...cards])
+  //       closeAllPopups()
+  //       resetInputValues()
+  //       setIsButtonLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       setIsButtonLoading(false)
+  //       console.error(`Ошибка при добавлении карточки ${err}`)
+  //     })
+  // }
+  
+  const handleAddCard = useCallback((dataCard, resetInputValues) => {
+    function makeRequest() {
+      return (api.addCard(dataCard)
+        .then(res => {
+          setCards([res, ...cards]);
+          resetInputValues()
+        }))
+    }
+    handleSubmit(makeRequest, 'Ошибка при добавлении карточки')
+  }, [cards, handleSubmit])
   
   useEffect(() => {
     if(localStorage.jwt){
@@ -255,10 +290,9 @@ function App() {
   <div className="page">
 
     <Header
+      userEmail={userEmail}
+      setLoggedIn={setLoggedIn}
       loggedIn={loggedIn}
-      titleButtonChange={registerLoginChange}
-      register={register}
-      userEmail={'someEmail@mail.ru'}
     />
     <SendContext.Provider value={isButtonLoading}>
     <Routes>
@@ -275,6 +309,7 @@ function App() {
             isLoadingCards = {isLoading}
             isLoadingProfile = {isLoading}
             loggedIn={loggedIn}
+            setLoggedIn={setLoggedIn}
        />}/>
         <Route path='/sign-up' element={
           <Register
@@ -292,7 +327,7 @@ function App() {
     </Routes>
     </SendContext.Provider>
 
-    <Footer/>
+    {loggedIn ? <Footer/> : ''}
 
   <SendContext.Provider value={isButtonLoading}>
     <EditProfilePopup
@@ -322,9 +357,16 @@ function App() {
       titleBtn='Да'
       isOpen={isDeletePopupOpen}
       onClose ={closeAllPopups}
-      onSubmit={handleDeleteCard}
+      onSubmit={handleDeleteSubmit}
       isButtonLoading={isButtonLoading}
     />
+
+    {/* <DeletePopup 
+      isOpen={isDeletePopupOpen}
+      onClose={closeAllPopups}
+      onSubmit={handleDeleteSubmit}
+    /> */}
+
     </SendContext.Provider>
 
     <PopupImage  card={selectedCard} isOpen={isImagePopupOpen} onClose = {closeAllPopups}/>
