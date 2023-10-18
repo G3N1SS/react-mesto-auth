@@ -1,10 +1,10 @@
 import { useContext } from 'react'
 import SendContext from '../contexts/SendContext'
 
-export default function Input({ name, type, placeholder, minLength, maxLength, isInputValid, value, onChange, error}) {
+export default function Input({ name, type, placeholder, minLength, maxLength, isInputValid, value, onChange, error }) {
   const isSend = useContext(SendContext)
 
-  return(
+  return (
     <>
       {name === 'password' || name === 'email' ?
         <>
@@ -21,10 +21,10 @@ export default function Input({ name, type, placeholder, minLength, maxLength, i
             disabled={isSend}
           />
           <span className={'login__error error'}>{error}</span>
-        </> 
+        </>
         :
         <>
-          <input 
+          <input
             name={name}
             type={type}
             placeholder={placeholder}

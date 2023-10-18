@@ -1,9 +1,4 @@
-import { useContext  } from "react";
-
-
 export default function Form({ name, titleButton, children, isValid, onSubmit }) {
-  // const isSend = useContext(SendContext)
-
   return(
     <form onSubmit={onSubmit}>
       {children}

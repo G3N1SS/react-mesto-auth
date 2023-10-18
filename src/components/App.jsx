@@ -44,19 +44,13 @@ function App() {
   const [isSuccessful, setIsSuccessful] = useState(false)
   const [isCheckToken, setIsCheckToken] = useState(true)
 
-  // const [register,setRegister] = useState(true)
-
-  // const registerLoginChange = useCallback(() => {
-  //   register ? setRegister(false) : setRegister(true)
-  // }, [register])
-
-  function handleLogin(password,email){
+  function handleLogin(password, email) {
     setIsButtonLoading(true)
-    authorization(password,email)
+    authorization(password, email)
       .then(res => {
         localStorage.setItem('jwt', res.token)
         setLoggedIn(true)
-        
+
         navigate('/')
       })
       .catch(err => {
@@ -67,21 +61,21 @@ function App() {
       .finally(() => setIsButtonLoading(false))
   }
 
-  function handleRegister(password,email){
+  function handleRegister(password, email) {
     setIsButtonLoading(true)
-    registration(password,email)
+    registration(password, email)
       .then(() => {
-        setIsResultPopupOpen(true)
         setIsSuccessful(true)
-
         navigate('/sign-in')
       })
       .catch(err => {
-        setIsResultPopupOpen(true)
         setIsSuccessful(false)
         console.error(`Ошибка при регистрации ${err}`)
       })
-      .finally(() => setIsButtonLoading(false))
+      .finally(() => {
+        setIsResultPopupOpen(true)
+        setIsButtonLoading(false)
+      })
   }
 
   const setAllStatesForClosePopups = () => {
@@ -105,45 +99,29 @@ function App() {
     document.removeEventListener('keydown', closePopupByEsc)
   }, [setAllStatesForClosePopups, closePopupByEsc])
 
-  function setEventListenerForDocument(){
-    document.addEventListener('keydown', closePopupByEsc)
-  }
-
-  // function closeAllPopups(){
-  //   setIsEditAvatarPopupOpen(false)
-  //   setIsEditProfilePopupOpen(false)
-  //   setIsAddPlacePopupOpen(false)
-  //   setImagePopup(false)
-  //   setDeletePopupOpen(false)
-  // }
-
-  function handleEditAvatarClick(){
+  function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true)
-    setEventListenerForDocument()
   }
 
-  function handleEditProfileClick(){
+  function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
-    setEventListenerForDocument()
+
   }
 
-  function handleEditPlaceClick(){
+  function handleEditPlaceClick() {
     setIsAddPlacePopupOpen(true)
-    setEventListenerForDocument()
   }
 
-  function handleCardClick(card){
+  function handleCardClick(card) {
     setSelectedCard(card);
     setImagePopup(true)
-    setEventListenerForDocument()
   }
 
-  function handleDeletePopupClick(cardId){
+  function handleDeletePopupClick(cardId) {
     setDeleteCardId(cardId)
     setDeletePopupOpen(true)
-    setEventListenerForDocument()
   }
-  
+
   const handleSubmit = useCallback((request, textError) => {
     setIsButtonLoading(true)
     request()
@@ -152,22 +130,6 @@ function App() {
       .finally(() => setIsButtonLoading(false))
   }, [closeAllPopups])
 
-  // function handleDeleteCard(evt){
-  //   evt.preventDefault()
-  //   setIsButtonLoading(true)
-  //   api.deleteCard(deleteCardId)
-  //     .then(() => {
-  //       setCards(cards.filter((item) => {
-  //         return item._id !== deleteCardId
-  //       }))
-  //       closeAllPopups()
-  //       setIsButtonLoading(false)
-  //     })
-  //     .catch((err) => {
-  //       setIsButtonLoading(false)
-  //       console.error(`Ошибка при удалении карточки ${err}`)
-  //     })
-  // }
   const handleDeleteSubmit = useCallback((evt) => {
     evt.preventDefault()
     function makeRequest() {
@@ -181,30 +143,15 @@ function App() {
   }, [cards, deleteCardId, handleSubmit])
 
   const handleUpdateUser = useCallback(userEmail => {
-    function makeRequest(){
+    function makeRequest() {
       return (api.setUserInfo(userEmail))
-      .then(res => {
-        setCurrentUser(res)
-      })
+        .then(res => {
+          setCurrentUser(res)
+        })
     }
     handleSubmit(makeRequest, 'Ошибка при редактировании профиля')
   }, [handleSubmit])
-  
 
-  // function handleUpdateAvatar(dataUser, resetInputValues){
-  //   setIsButtonLoading(true);
-  //   api.setNewAvatar(dataUser)
-  //     .then(res => {
-  //       setCurrentUser(res)
-  //       closeAllPopups()
-  //       resetInputValues()
-  //       setIsButtonLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setIsButtonLoading(false);
-  //       console.error(`Ошибка при редактирования аватара ${err}`)
-  //   })
-  // }
   const handleUpdateAvatar = useCallback((userEmail, resetInputValues) => {
     function makeRequest() {
       return (api.setNewAvatar(userEmail)
@@ -216,21 +163,6 @@ function App() {
     handleSubmit(makeRequest, 'Ошибка при редактировании аватара')
   }, [handleSubmit])
 
-  // function handleAddCard(dataCard, resetInputValues){
-  //   setIsButtonLoading(true)
-  //   api.addCard(dataCard)
-  //     .then(res => {
-  //       setCards([res, ...cards])
-  //       closeAllPopups()
-  //       resetInputValues()
-  //       setIsButtonLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setIsButtonLoading(false)
-  //       console.error(`Ошибка при добавлении карточки ${err}`)
-  //     })
-  // }
-  
   const handleAddCard = useCallback((dataCard, resetInputValues) => {
     function makeRequest() {
       return (api.addCard(dataCard)
@@ -241,9 +173,9 @@ function App() {
     }
     handleSubmit(makeRequest, 'Ошибка при добавлении карточки')
   }, [cards, handleSubmit])
-  
+
   useEffect(() => {
-    if(localStorage.jwt){
+    if (localStorage.jwt) {
       getUserData(localStorage.jwt)
         .then(res => {
           setUserEmail(res.data.email)
@@ -251,7 +183,7 @@ function App() {
           setIsCheckToken(false)
         })
         .catch(e => console.error(`Ошибка при авторизации ${e}`))
-    } else{
+    } else {
       setLoggedIn(false)
       setIsCheckToken(false)
     }
@@ -272,115 +204,107 @@ function App() {
 
   useEffect(() => {
     function closePopupByEsc(evt) {
-      if(evt.key === 'Escape') {
+      if (evt.key === 'Escape') {
         closeAllPopups()
       }
     }
-    if(isOpen){
+    if (isOpen) {
       document.addEventListener('keydown', closePopupByEsc)
-      return() => {
+      return () => {
         document.removeEventListener('keydown', closePopupByEsc)
       }
     }
   }, [isOpen, closeAllPopups])
 
   return (
-  <>
-  <CurrentUserContext.Provider value={currnetUser}>
-  <div className="page">
+    <CurrentUserContext.Provider value={currnetUser}>
+      <div className="page">
 
-    <Header
-      userEmail={userEmail}
-      setLoggedIn={setLoggedIn}
-      loggedIn={loggedIn}
-    />
-    <SendContext.Provider value={isButtonLoading}>
-    <Routes>
-      <Route path='/' 
-        element={<ProtectedRoute
-            element={Main}
-            name={'main'}
-            onEditProfile = {handleEditProfileClick}
-            onEditAvatar={handleEditAvatarClick}
-            onAddPlace={handleEditPlaceClick}
-            onCardClick={handleCardClick}
-            onDelete={handleDeletePopupClick}
-            cards={cards}
-            isLoadingCards = {isLoading}
-            isLoadingProfile = {isLoading}
-            loggedIn={loggedIn}
-            setLoggedIn={setLoggedIn}
-       />}/>
-        <Route path='/sign-up' element={
-          <Register
-            name={'sign-up'}
-            handleRegister={handleRegister}
-          />}
+        <Header
+          userEmail={userEmail}
+          setLoggedIn={setLoggedIn}
+          loggedIn={loggedIn}
+        />
+        <SendContext.Provider value={isButtonLoading}>
+          <Routes>
+            <Route path='/'
+              element={<ProtectedRoute
+                element={Main}
+                name={'main'}
+                onEditProfile={handleEditProfileClick}
+                onEditAvatar={handleEditAvatarClick}
+                onAddPlace={handleEditPlaceClick}
+                onCardClick={handleCardClick}
+                onDelete={handleDeletePopupClick}
+                cards={cards}
+                isLoadingCards={isLoading}
+                isLoadingProfile={isLoading}
+                loggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+              />} />
+            <Route path='/sign-up' element={
+              <Register
+                name={'sign-up'}
+                handleRegister={handleRegister}
+              />}
+            />
+            <Route path='/sign-in' element={
+              loggedIn ? <Navigate to={'/'} /> :
+                <Login
+                  name={'sign-in'}
+                  handleLogin={handleLogin}
+                />} />
+            <Route path='*' element={<PageNotFound />} />
+          </Routes>
+        </SendContext.Provider>
+
+        {loggedIn ? <Footer /> : ''}
+
+        <SendContext.Provider value={isButtonLoading}>
+          <EditProfilePopup
+            onUpdateUser={handleUpdateUser}
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            isButtonLoading={isButtonLoading}
           />
-        <Route path='/sign-in' element={
-          loggedIn ? <Navigate to={'/'} /> :
-        <Login
-          name={'sign-in'}
-          handleLogin={handleLogin}
-        />} />
-        <Route path='*' element={<PageNotFound/>}/>
-    </Routes>
-    </SendContext.Provider>
 
-    {loggedIn ? <Footer/> : ''}
+          <AddPlacePopup
+            onAddPlace={handleAddCard}
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            isButtonLoading={isButtonLoading}
+          />
 
-  <SendContext.Provider value={isButtonLoading}>
-    <EditProfilePopup
-      onUpdateUser = {handleUpdateUser}
-      isOpen = {isEditProfilePopupOpen}
-      onClose ={closeAllPopups}
-      isButtonLoading = {isButtonLoading}
-    />
+          <EditAvatarPopup
+            onUpdateAvatar={handleUpdateAvatar}
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            isButtonLoading={isButtonLoading}
+          />
 
-    <AddPlacePopup
-      onAddPlace={handleAddCard}
-      isOpen ={isAddPlacePopupOpen}
-      onClose={closeAllPopups}
-      isButtonLoading={isButtonLoading}
-    />
+          <PopupWithForm
+            name='delete'
+            title='Вы уверены?'
+            titleBtn='Да'
+            isOpen={isDeletePopupOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleDeleteSubmit}
+            isButtonLoading={isButtonLoading}
+          />
 
-    <EditAvatarPopup
-      onUpdateAvatar={handleUpdateAvatar}      
-      isOpen ={isEditAvatarPopupOpen}
-      onClose={closeAllPopups}
-      isButtonLoading={isButtonLoading}
-    />
+        </SendContext.Provider>
 
-    <PopupWithForm 
-      name='delete'
-      title='Вы уверены?'
-      titleBtn='Да'
-      isOpen={isDeletePopupOpen}
-      onClose ={closeAllPopups}
-      onSubmit={handleDeleteSubmit}
-      isButtonLoading={isButtonLoading}
-    />
+        <PopupImage card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
 
-    {/* <DeletePopup 
-      isOpen={isDeletePopupOpen}
-      onClose={closeAllPopups}
-      onSubmit={handleDeleteSubmit}
-    /> */}
+        <InfoTooltip
+          name='result'
+          isSuccessful={isSuccessful}
+          isOpen={isResultPopupOpen}
+          onClose={closeAllPopups}
+        />
 
-    </SendContext.Provider>
-
-    <PopupImage  card={selectedCard} isOpen={isImagePopupOpen} onClose = {closeAllPopups}/>
-
-    <InfoTooltip
-      name='result'
-      isSuccessful={isSuccessful}
-      isOpen={isResultPopupOpen}
-      onClose={closeAllPopups}
-    />
-
-  </div>
-  </CurrentUserContext.Provider>
-  </>
+      </div>
+    </CurrentUserContext.Provider>
   )
 }
 

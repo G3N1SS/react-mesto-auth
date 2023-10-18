@@ -2,23 +2,15 @@ import { useContext } from "react"
 import Card from "./Card.jsx"
 import CurrentUserContext from "../contexts/CurrentUserContext.jsx"
 import Spinner from "./Spinner/Spinner.jsx"
-import Register from "./Register.jsx"
-import Login from "./Login.jsx"
 
-export default function Main({name, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onDelete, cards, isLoadingCards, isLoadingProfile}){
+export default function Main({ name, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onDelete, cards, isLoadingCards, isLoadingProfile }) {
   const currentUser = useContext(CurrentUserContext)
 
-  // const [userName, setUserName] = useState('')
-  // const [userDescription, setUserDescription] = useState('')
-  // const [userAvatar, setUserAvatar] = useState('')
-
-
-  return(
+  return (
     <main>
-      {name === 'main' ? <>
       <section className="profile">
         {isLoadingProfile ? ' ' : <div className="profile__info">
-          <img className="profile__avatar-image" alt="Аватар" src={currentUser.avatar ? currentUser.avatar : '#'}/>
+          <img className="profile__avatar-image" alt="Аватар" src={currentUser.avatar ? currentUser.avatar : '#'} />
           <button className="profile__avatar-button" onClick={onEditAvatar}></button>
           <div className="profile__banner">
             <h1 className="profile__name">{currentUser.name ? currentUser.name : ' '}</h1>
@@ -29,21 +21,16 @@ export default function Main({name, onEditProfile, onAddPlace, onEditAvatar, onC
         </div>}
       </section>
       <section className="elements">
-        {isLoadingCards ? <Spinner/> :
+        {isLoadingCards ? <Spinner /> :
           <div className="element">
             {cards.map(data => {
-                return (
-                  <Card card={data} onCardClick={onCardClick} key={data._id} onDelete={onDelete}/>
-                )
+              return (
+                <Card card={data} onCardClick={onCardClick} key={data._id} onDelete={onDelete} />
+              )
             })}
           </div>
-        }       
+        }
       </section>
-      </> 
-      : name === 'signup' ? 
-        <Register name={name}/>
-      :
-      <Login name={name}/>}
     </main>
-    )
+  )
 }
